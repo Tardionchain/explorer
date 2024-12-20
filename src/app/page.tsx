@@ -41,16 +41,13 @@ export default function TaskPage() {
     setCurrentPage(1); // Reset to the first page
   };
 
-  if (loading) {
-    return (
-      <div className="absolute inset-0 flex items-center justify-center bg-black">
-        <Loader2 className="h-4 w-4 animate-spin" />
-      </div>
-    );
-  }
-
   return (
-    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+    <div className=" h-full relative flex-1 flex-col space-y-8 p-8 md:flex">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/5">
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </div>
+      )}
       <div className="flex items-center space-x-2">
         <input
           type="text"
@@ -87,7 +84,21 @@ export default function TaskPage() {
               </div>
             ),
           },
-          { accessorKey: "from", header: "From" },
+          {
+            accessorKey: "from",
+            header: "From",
+            cell: ({ row }) => (
+              <div>
+                <div className="cursor-pointer max-lg:block hidden hover:underline">
+                  {row.original.from.slice(0, 4)}...
+                  {row.original.from.slice(-4)}
+                </div>
+                <div className="cursor-pointer max-lg:hidden hover:underline">
+                  {row.original.from}
+                </div>
+              </div>
+            ),
+          },
           { accessorKey: "amount", header: "Amount" },
           { accessorKey: "slot", header: "Slot" },
           { accessorKey: "blockTime", header: "Block Time" },
